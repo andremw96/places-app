@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:great_place_app/providers/great_places_provider.dart';
 import 'package:great_place_app/screens/add_place_screen.dart';
+import 'package:provider/provider.dart';
 
 class PlacesListScreen extends StatelessWidget {
   const PlacesListScreen({Key? key}) : super(key: key);
@@ -20,8 +22,24 @@ class PlacesListScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Center(
-        child: CircularProgressIndicator(),
+      body: Consumer<GreatPlacesProvider>(
+        child: Center(
+          child: Text(
+            "got no places",
+          ),
+        ),
+        builder: (context, value, child) => value.items.isEmpty
+            ? child!
+            : ListView.builder(
+                itemCount: value.items.length,
+                itemBuilder: (ctx, i) => ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: FileImage(value.items[i].image),
+                  ),
+                  title: Text(value.items[i].title),
+                  onTap: () {},
+                ),
+              ),
       ),
     );
   }
